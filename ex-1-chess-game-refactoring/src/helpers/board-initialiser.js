@@ -1,9 +1,9 @@
-import Bishop from '../pieces/bishop.js';
-import King from '../pieces/king.js';
-import Knight from '../pieces/knight.js';
-import Pawn from '../pieces/pawn.js';
-import Queen from '../pieces/queen.js';
-import Rook from '../pieces/rook.js';
+import Bishop from "../pieces/bishop.js";
+import King from "../pieces/king.js";
+import Knight from "../pieces/knight.js";
+import Pawn from "../pieces/pawn.js";
+import Queen from "../pieces/queen.js";
+import Rook from "../pieces/rook.js";
 
 const CHESSBOARD_FIEDS_PER_ROW = 8;
 const CHESS_BOARD_FIELDS = 64;
@@ -32,7 +32,11 @@ const KING_POSITION_TOP = 60;
 export default function initialiseChessBoard() {
   const squares = Array(CHESS_BOARD_FIELDS).fill(null);
 
-  for (let i = CHESSBOARD_FIEDS_PER_ROW; i < CHESSBOARD_FIEDS_PER_ROW * 2; i++) {
+  for (
+    let i = CHESSBOARD_FIEDS_PER_ROW;
+    i < CHESSBOARD_FIEDS_PER_ROW * 2;
+    i++
+  ) {
     squares[i] = new Pawn(2);
     squares[i + 40] = new Pawn(1);
   }
