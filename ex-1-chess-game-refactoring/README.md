@@ -1,5 +1,8 @@
-# React Chess
-Two player chess game built with React js.
+
+
+# Exercise 1 - Chess game refactoring. 
+
+The original code of the application and structure: https://www.techighness.com/post/develop-two-player-chess-game-with-react-js/
 
 ## How To Install And Run Locally
 
@@ -15,17 +18,4 @@ ES6 classes have been used for chess pieces. `Piece` is a parent class to which 
 `Game` component maintains the board of squares filled with pieces, and handles turn and move of both players. 
 
 Each piece implements `isMovePossible(src, dest)` and `getSrcToDestPath(src, dest)` methods which `Game` uses to identify legality of move and to render UI accordingly.
-
-## To Dos
-- Implement a method in `Game` that returns true if this move exposes the player's king to check. Use it to disallow the move and inform user.
-- Write unit tests 
-
-## Demo
-
-http://www.talhaawan.net/react-chess/
-
-## Blog Post
-
-https://www.techighness.com/post/develop-two-player-chess-game-with-react-js/
-
 
