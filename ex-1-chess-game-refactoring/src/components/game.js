@@ -10,8 +10,8 @@ export default class Game extends React.Component {
     super();
     this.state = {
       squares: initialiseChessBoard(),
-      whiteFallenSld: [],
-      blackFallenSld: [],
+      whiteFallenSoldiers: [],
+      blackFallenSoldiers: [],
       player: 1,
       sourceSelection: -1,
       status: '',
@@ -22,7 +22,7 @@ export default class Game extends React.Component {
   handleClick(i) {
     const squares = this.state.squares.slice();
 
-    if (this.state.sourceSelection == -1) {
+    if (this.state.sourceSelection === -1) {
       if (!squares[i] || squares[i].player !== this.state.player) {
         this.setState({ status: "Wrong selection. Choose player " + this.state.player + " pieces." });
         if (squares[i]) {
@@ -30,7 +30,7 @@ export default class Game extends React.Component {
         }
       }
       else {
-        squares[i].style = { ...squares[i].style, backgroundColor: "RGB(111,143,114)" };
+        squares[i].style = { ...squares[i].style, backgroundColor: "RGB(111,143,114)" }; // Emerald from http://omgchess.blogspot.com/2015/09/chess-board-color-schemes.html
         this.setState({
           status: "Choose destination for the selected piece",
           sourceSelection: i
@@ -40,7 +40,7 @@ export default class Game extends React.Component {
 
     else if (this.state.sourceSelection > -1) {
       squares[this.state.sourceSelection].style = { ...squares[this.state.sourceSelection].style, backgroundColor: "" };
-      if (squares[i] && squares[i].player == this.state.player) {
+      if (squares[i] && squares[i].player === this.state.player) {
         this.setState({
           status: "Wrong selection. Choose valid source and destination again.",
           sourceSelection: -1,
@@ -49,31 +49,31 @@ export default class Game extends React.Component {
       else {
 
         const squares = this.state.squares.slice();
-        const whiteFallenSld = this.state.whiteFallenSld.slice();
-        const blackFallenSld = this.state.blackFallenSld.slice();
+        const whiteFallenSoldiers = this.state.whiteFallenSoldiers.slice();
+        const blackFallenSoldiers = this.state.blackFallenSoldiers.slice();
         const isDestEnemyOccupied = squares[i] ? true : false;
         const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
         const srcToDestPath = squares[this.state.sourceSelection].getSrcToDestPath(this.state.sourceSelection, i);
-        const moveLegal = this.moveLegal(srcToDestPath);
+        const isMoveLegal = this.isMoveLegal(srcToDestPath);
 
-        if (isMovePossible && moveLegal) {
+        if (isMovePossible && isMoveLegal) {
           if (squares[i] !== null) {
-            if (squares[i].player == 1) {
-              whiteFallenSld.push(squares[i]);
+            if (squares[i].player === 1) {
+              whiteFallenSoldiers.push(squares[i]);
             }
             else {
-              blackFallenSld.push(squares[i]);
+              blackFallenSoldiers.push(squares[i]);
             }
           }
           squares[i] = squares[this.state.sourceSelection];
           squares[this.state.sourceSelection] = null;
-          let player = this.state.player == 1 ? 2 : 1;
-          let turn = this.state.turn == 'white' ? 'black' : 'white';
+          let player = this.state.player === 1 ? 2 : 1;
+          let turn = this.state.turn === 'white' ? 'black' : 'white';
           this.setState({
             sourceSelection: -1,
             squares: squares,
-            whiteFallenSld: whiteFallenSld,
-            blackFallenSld: blackFallenSld,
+            whiteFallenSoldiers: whiteFallenSoldiers,
+            blackFallenSoldiers: blackFallenSoldiers,
             player: player,
             status: '',
             turn: turn
@@ -81,7 +81,7 @@ export default class Game extends React.Component {
         }
         else {
           this.setState({
-            status: "Wrong!",
+            status: "Wrong selection. Choose valid source and destination again.",
             sourceSelection: -1,
           });
         }
@@ -90,15 +90,19 @@ export default class Game extends React.Component {
 
   }
 
-
-  moveLegal(srcToDestPath) {
-    let legal = true;
+  /**
+   * Check all path indices are null. For one steps move of pawn/others or jumping moves of knight array is empty, so  move is legal.
+   * @param  {[type]}  srcToDestPath [array of board indices comprising path between src and dest ]
+   * @return {Boolean}               
+   */
+  isMoveLegal(srcToDestPath) {
+    let isLegal = true;
     for (let i = 0; i < srcToDestPath.length; i++) {
       if (this.state.squares[srcToDestPath[i]] !== null) {
-        legal = false;
+        isLegal = false;
       }
     }
-    return legal;
+    return isLegal;
   }
 
   render() {
@@ -122,14 +126,22 @@ export default class Game extends React.Component {
             <div className="fallen-soldier-block">
 
               {<FallenSoldierBlock
-                whiteSld={this.state.whiteFallenSld}
-                blackSld={this.state.blackFallenSld}
+                whiteFallenSoldiers={this.state.whiteFallenSoldiers}
+                blackFallenSoldiers={this.state.blackFallenSoldiers}
               />
               }
             </div>
 
           </div>
         </div>
+
+        <div className="icons-attribution">
+          <div> <small> Chess Icons And Favicon (extracted) By en:User:Cburnett [<a href="http://www.gnu.org/copyleft/fdl.html">GFDL</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA-3.0</a>, <a href="http://opensource.org/licenses/bsd-license.php">BSD</a> or <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>], <a href="https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces">via Wikimedia Commons</a> </small></div>
+        </div>
+        <ul>
+          <li><a href="https://github.com/TalhaAwan/react-chess" target="_blank">Source Code</a> </li>
+          <li><a href="https://www.techighness.com/post/develop-two-player-chess-game-with-react-js/">Blog Post</a></li>
+        </ul>
       </div>
 
 
