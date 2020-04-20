@@ -11,13 +11,14 @@ export default class Queen extends Piece {
   }
 
   isMovePossible(src, dest) {
-    let mod = src % 8;
-    let diff = 8 - mod;
+    const mod = src % 8;
+    const diff = 8 - mod;
+    const srcDestAbsoluteDifference = Math.abs(src - dest);
 
     return (
-      Math.abs(src - dest) % 9 === 0 ||
-      Math.abs(src - dest) % 7 === 0 ||
-      Math.abs(src - dest) % 8 === 0 ||
+      srcDestAbsoluteDifference % 9 === 0 ||
+      srcDestAbsoluteDifference % 7 === 0 ||
+      srcDestAbsoluteDifference % 8 === 0 ||
       (dest >= src - mod && dest < src + diff)
     );
   }
@@ -29,6 +30,7 @@ export default class Queen extends Piece {
    * @return {[array]}
    */
   getSrcToDestPath(src, dest) {
+    const srcDestAbsoluteDifference = Math.abs(src - dest);
     let path = [],
       pathStart,
       pathEnd,
@@ -40,13 +42,13 @@ export default class Queen extends Piece {
       pathStart = src;
       pathEnd = dest;
     }
-    if (Math.abs(src - dest) % 8 === 0) {
+    if (srcDestAbsoluteDifference % 8 === 0) {
       incrementBy = 8;
       pathStart += 8;
-    } else if (Math.abs(src - dest) % 9 === 0) {
+    } else if (srcDestAbsoluteDifference % 9 === 0) {
       incrementBy = 9;
       pathStart += 9;
-    } else if (Math.abs(src - dest) % 7 === 0) {
+    } else if (srcDestAbsoluteDifference % 7 === 0) {
       incrementBy = 7;
       pathStart += 7;
     } else {
