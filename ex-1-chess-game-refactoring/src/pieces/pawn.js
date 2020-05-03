@@ -1,7 +1,10 @@
 import Piece from "./piece.js";
 
-const PAWN_INITIAL_POSITIONS_WHITE = [48, 49, 50, 51, 52, 53, 54, 55];
+const PAWN_INITIAL_POSITIONS_WHITE = [8, 49, 50, 51, 52, 53, 54, 55];
 const PAWN_INITIAL_POSITIONS_BLACK = [8, 9, 10, 11, 12, 13, 14, 15];
+const FIELDS_NUMBER_IN_TWO_ROWS = 16;
+const FIELDS_NUMBER_IN_ONE_ROWS = 8;
+
 
 export default class Pawn extends Piece {
   constructor(player) {
@@ -18,28 +21,30 @@ export default class Pawn extends Piece {
   }
 
   isMovePossible(src, dest, isDestEnemyOccupied) {
-    if (this.player === 1) {
-      if (
-        (dest === src - 8 && !isDestEnemyOccupied) ||
-        (dest === src - 16 && this.initialPositions[1].indexOf(src) !== -1)
-      ) {
+    const isPlayerWhite = this.player === 1;
+    const isPlayerBlack = this.player === 2;
+
+
+    const sourceOneRowBehindIndex = src - FIELDS_NUMBER_IN_ONE_ROWS;
+    const sourceOneRowForwardIndex = src + FIELDS_NUMBER_IN_ONE_ROWS;
+
+    const isWhitePawnIndexValid = dest === (src - FIELDS_NUMBER_IN_TWO_ROWS) && (this.initialPositions[1].indexOf(src) !== -1);
+    const isBlackPawnIndexValid = (this.initialPositions[2].indexOf(src) !== -1) && (dest === src + FIELDS_NUMBER_IN_TWO_ROWS);
+
+    const isWhitePawnDestPossible = (dest === src - 9 || dest === src - 7)
+    const isBlackPawnDestPossible = (dest === src + 9 || dest === src + 7)
+
+
+    if (isPlayerWhite) {
+      if ((dest === sourceOneRowBehindIndex && !isDestEnemyOccupied) || isWhitePawnIndexValid) {
         return true;
-      } else if (
-        isDestEnemyOccupied &&
-        (dest === src - 9 || dest === src - 7)
-      ) {
+      } else if (isDestEnemyOccupied && isWhitePawnDestPossible) {
         return true;
       }
-    } else if (this.player === 2) {
-      if (
-        (dest === src + 8 && !isDestEnemyOccupied) ||
-        (dest === src + 16 && this.initialPositions[2].indexOf(src) !== -1)
-      ) {
+    } else if (isPlayerBlack) {
+      if ((dest === sourceOneRowForwardIndex && !isDestEnemyOccupied) || (isBlackPawnIndexValid)) {
         return true;
-      } else if (
-        isDestEnemyOccupied &&
-        (dest === src + 9 || dest === src + 7)
-      ) {
+      } else if (isDestEnemyOccupied && isBlackPawnDestPossible) {
         return true;
       }
     }
@@ -53,10 +58,10 @@ export default class Pawn extends Piece {
    * @return {[type]}      [description]
    */
   getSrcToDestPath(src, dest) {
-    if (dest === src - 16) {
-      return [src - 8];
-    } else if (dest === src + 16) {
-      return [src + 8];
+    if (dest === src - FIELDS_NUMBER_IN_TWO_ROWS) {
+      return [src - FIELDS_NUMBER_IN_ONE_ROWS];
+    } else if (dest === src + FIELDS_NUMBER_IN_TWO_ROWS) {
+      return [src + FIELDS_NUMBER_IN_ONE_ROWS];
     }
     return [];
   }
