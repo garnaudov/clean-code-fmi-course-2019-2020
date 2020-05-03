@@ -158,18 +158,6 @@ export default class Game extends React.Component {
             </small>
           </div>
         </div>
-        <ul>
-          <li>
-            <a href="https://github.com/TalhaAwan/react-chess" target="_blank">
-              Source Code
-            </a>{" "}
-          </li>
-          <li>
-            <a href="https://www.techighness.com/post/develop-two-player-chess-game-with-react-js/">
-              Blog Post
-            </a>
-          </li>
-        </ul>
       </div>
     );
   }
