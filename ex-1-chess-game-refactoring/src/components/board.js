@@ -3,6 +3,8 @@ import React from "react";
 import "../index.css";
 import Square from "./square.js";
 
+const NUMBERS_BOARD_FIELDS_PER_ROW = 8;
+
 export default class Board extends React.Component {
   renderSquare(i, squareShade) {
     return (
@@ -16,14 +18,16 @@ export default class Board extends React.Component {
 
   render() {
     const board = [];
-    for (let i = 0; i < 8; i++) {
+    let areBothCountersEven = (i,j) => isEven(i) && isEven(j);
+    let areBothCountersOdd = (i,j) => !isEven(i) && !isEven(j);
+    for (let i = 0; i < NUMBERS_BOARD_FIELDS_PER_ROW; i++) {
       const squareRows = [];
-      for (let j = 0; j < 8; j++) {
+      for (let j = 0; j < NUMBERS_BOARD_FIELDS_PER_ROW; j++) {
         const squareShade =
-          (isEven(i) && isEven(j)) || (!isEven(i) && !isEven(j))
+          (areBothCountersEven(i,j)) || (areBothCountersOdd(i,j))
             ? "light-square"
             : "dark-square";
-        squareRows.push(this.renderSquare(i * 8 + j, squareShade));
+        squareRows.push(this.renderSquare(i * NUMBERS_BOARD_FIELDS_PER_ROW + j, squareShade));
       }
       board.push(<div className="board-row">{squareRows}</div>);
     }
